@@ -11,7 +11,6 @@ class P2P_Storage {
 		scb_register_table( 'p2p' );
 		scb_register_table( 'p2pmeta' );
 
-		add_action( 'deleted_post', array( __CLASS__, 'deleted_object' ) );
 		add_action( 'deleted_user', array( __CLASS__, 'deleted_object' ) );
 	}
 
