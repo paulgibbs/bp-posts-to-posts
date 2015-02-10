@@ -35,3 +35,35 @@ abstract class P2P_Item {
 	abstract function get_title();
 }
 
+class P2P_Item_User extends P2P_Item {
+
+	function get_title() {
+		return $this->item->display_name;
+	}
+
+	function get_permalink() {
+		return get_author_posts_url( $this->item->ID );
+	}
+
+	function get_editlink() {
+		return get_edit_user_link( $this->item->ID );
+	}
+}
+
+class P2P_Item_Any extends P2P_Item {
+
+	function __construct() {}
+
+	function get_permalink() {}
+
+	function get_title() {}
+
+	function get_object() {
+		return 'any';
+	}
+
+	function get_id() {
+		return false;
+	}
+}
+
