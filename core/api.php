@@ -1,56 +1,6 @@
 <?php
 
-/**
- * Register a connection type.
- *
- * @link https://github.com/scribu/wp-posts-to-posts/wiki/p2p_register_connection_type
- *
- * @param array $args
- * @return bool|object False on failure, P2P_Connection_Type instance on success.
- */
-function p2p_register_connection_type( $args ) {
-	if ( !did_action('init') ) {
-		trigger_error( "Connection types should not be registered before the 'init' hook." );
-	}
 
-	$argv = func_get_args();
-
-	if ( count( $argv ) > 1 ) {
-		$args = array();
-		foreach ( array( 'from', 'to', 'reciprocal' ) as $i => $key ) {
-			if ( isset( $argv[ $i ] ) )
-				$args[ $key ] = $argv[ $i ];
-		}
-	} else {
-		$args = $argv[0];
-	}
-
-	if ( isset( $args['id'] ) ) {
-		$args['name'] = _p2p_pluck( $args, 'id' );
-	}
-
-	if ( isset( $args['prevent_duplicates'] ) ) {
-		$args['duplicate_connections'] = !$args['prevent_duplicates'];
-	}
-
-	if ( isset( $args['show_ui'] ) ) {
-		$args['admin_box'] = array(
-			'show' => _p2p_pluck( $args, 'show_ui' )
-		);
-
-		if ( isset( $args['context'] ) )
-			$args['admin_box']['context'] = _p2p_pluck( $args, 'context' );
-	}
-
-	if ( !isset( $args['admin_box'] ) )
-		$args['admin_box'] = 'any';
-
-	$ctype = P2P_Connection_Type_Factory::register( $args );
-
-	do_action( 'p2p_registered_connection_type', $ctype, $args );
-
-	return $ctype;
-}
 
 /**
  * Get a connection type.
