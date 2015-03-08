@@ -1,27 +1,14 @@
 <?php
 
 interface P2P_Direction_Strategy {
-	function get_arrow();
 	function choose_direction( $direction );
-	function directions_for_admin( $direction, $show_ui );
 	function get_directed_class();
 }
 
 class P2P_Determinate_Connection_Type implements P2P_Direction_Strategy {
 
-	function get_arrow() {
-		return '&rarr;';
-	}
-
 	function choose_direction( $direction ) {
 		return $direction;
-	}
-
-	function directions_for_admin( $direction, $show_ui ) {
-		return array_intersect(
-			_p2p_expand_direction( $show_ui ),
-			_p2p_expand_direction( $direction )
-		);
 	}
 
 	function get_directed_class() {
@@ -320,19 +307,8 @@ class P2P_Directed_Connection_Type {
 
 class P2P_Indeterminate_Connection_Type implements P2P_Direction_Strategy {
 
-	function get_arrow() {
-		return '&harr;';
-	}
-
 	function choose_direction( $direction ) {
 		return 'from';
-	}
-
-	function directions_for_admin( $_, $show_ui ) {
-		return array_intersect(
-			_p2p_expand_direction( $show_ui ),
-			_p2p_expand_direction( 'any' )
-		);
 	}
 
 	function get_directed_class() {
@@ -389,15 +365,6 @@ class P2P_Reciprocal_Connection_Type extends P2P_Indeterminate_Connection_Type {
 
 	function choose_direction( $direction ) {
 		return 'any';
-	}
-
-	function directions_for_admin( $direction, $show_ui ) {
-		if ( $show_ui )
-			$directions = array( 'any' );
-		else
-			$directions = array();
-
-		return $directions;
 	}
 }
 

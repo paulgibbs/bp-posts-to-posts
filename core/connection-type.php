@@ -34,12 +34,6 @@ class P2P_Connection_Type {
 	public function get_field( $field, $direction ) {
 		$value = $this->$field;
 
-		if ( 'title' == $field )
-			return $this->expand_title( $value, $direction );
-
-		if ( 'labels' == $field )
-			return $this->expand_labels( $value, $direction );
-
 		if ( false === $direction )
 			return $value;
 
@@ -84,31 +78,6 @@ class P2P_Connection_Type {
 			if ( 'one' != $value )
 				$value = 'many';
 		}
-	}
-
-	private function expand_labels( $additional_labels, $key ) {
-		$labels = clone $this->side[ $key ]->get_labels();
-		$labels->create = __( 'Create connections', P2P_TEXTDOMAIN );
-
-		foreach ( $additional_labels[ $key ] as $key => $var )
-			$labels->$key = $var;
-
-		return $labels;
-	}
-
-	private function expand_title( $title, $key ) {
-		if ( $title && !is_array( $title ) )
-			return $title;
-
-		if ( isset( $title[$key] ) )
-			return $title[$key];
-
-		$other_key = ( 'from' == $key ) ? 'to' : 'from';
-
-		return sprintf(
-			__( 'Connected %s', P2P_TEXTDOMAIN ),
-			$this->side[ $other_key ]->get_title()
-		);
 	}
 
 	public function __call( $method, $args ) {
@@ -420,23 +389,6 @@ class P2P_Connection_Type {
 			$raw_connected[] = $item->get_object();
 
 		p2p_distribute_connected( $items, $raw_connected, $prop_name );
-	}
-
-	public function get_desc() {
-		$desc = array();
-
-		foreach ( array( 'from', 'to' ) as $key ) {
-			$desc[ $key ] = $this->side[ $key ]->get_desc();
-		}
-
-		$label = sprintf( '%s %s %s', $desc['from'], $this->strategy->get_arrow(), $desc['to'] );
-
-		$title = $this->get_field( 'title', 'from' );
-
-		if ( $title )
-			$label .= " ($title)";
-
-		return $label;
 	}
 }
 

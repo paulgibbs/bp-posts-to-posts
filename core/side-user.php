@@ -12,30 +12,6 @@ class P2P_Side_User extends P2P_Side {
 		return 'user';
 	}
 
-	function get_desc() {
-		return __( 'Users', P2P_TEXTDOMAIN );
-	}
-
-	function get_title() {
-		return $this->get_desc();
-	}
-
-	function get_labels() {
-		return (object) array(
-			'singular_name' => __( 'User', P2P_TEXTDOMAIN ),
-			'search_items' => __( 'Search Users', P2P_TEXTDOMAIN ),
-			'not_found' => __( 'No users found.', P2P_TEXTDOMAIN ),
-		);
-	}
-
-	function can_edit_connections() {
-		return current_user_can( 'list_users' );
-	}
-
-	function can_create_item() {
-		return false;
-	}
-
 	function translate_qv( $qv ) {
 		if ( isset( $qv['p2p:include'] ) )
 			$qv['include'] = _p2p_pluck( $qv, 'p2p:include' );
