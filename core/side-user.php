@@ -14,13 +14,13 @@ class P2P_Side_User extends P2P_Side {
 
 	function translate_qv( $qv ) {
 		if ( isset( $qv['p2p:include'] ) )
-			$qv['include'] = _p2p_pluck( $qv, 'p2p:include' );
+			$qv['include'] = wp_list_pluck( $qv, 'p2p:include' );
 
 		if ( isset( $qv['p2p:exclude'] ) )
-			$qv['exclude'] = _p2p_pluck( $qv, 'p2p:exclude' );
+			$qv['exclude'] = wp_list_pluck( $qv, 'p2p:exclude' );
 
 		if ( isset( $qv['p2p:search'] ) && $qv['p2p:search'] )
-			$qv['search'] = '*' . _p2p_pluck( $qv, 'p2p:search' ) . '*';
+			$qv['search'] = '*' . wp_list_pluck( $qv, 'p2p:search' ) . '*';
 
 		if ( isset( $qv['p2p:page'] ) && $qv['p2p:page'] > 0 ) {
 			if ( isset( $qv['p2p:per_page'] ) && $qv['p2p:per_page'] > 0 ) {

@@ -14,7 +14,7 @@ class P2P_Query {
 
 		foreach ( $shortcuts as $key => $direction ) {
 			if ( !empty( $q[ $key ] ) ) {
-				$q['connected_items'] = _p2p_pluck( $q, $key );
+				$q['connected_items'] = wp_list_pluck( $q, $key );
 				$q['connected_direction'] = $direction;
 			}
 		}
@@ -85,13 +85,13 @@ class P2P_Query {
 		}
 
 		if ( isset( $q['connected_direction'] ) )
-			$directions = (array) _p2p_pluck( $q, 'connected_direction' );
+			$directions = (array) wp_list_pluck( $q, 'connected_direction' );
 		else
 			$directions = array();
 
 		$item = isset( $q['connected_items'] ) ? $q['connected_items'] : 'any';
 
-		$ctypes = (array) _p2p_pluck( $q, 'connected_type' );
+		$ctypes = (array) wp_list_pluck( $q, 'connected_type' );
 
 		$p2p_types = self::expand_ctypes( $item, $directions, $object_type, $ctypes );
 

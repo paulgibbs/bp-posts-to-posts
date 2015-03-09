@@ -1,10 +1,4 @@
 <?php
-
-/** @internal */
-function p2p_list_cluster( $items, $callback ) {
-	return scb_list_group_by( $items, $callback );
-}
-
 /** @internal */
 function _p2p_expand_direction( $direction ) {
 	if ( !$direction )
@@ -68,7 +62,7 @@ function _p2p_extract_post_types( $sides ) {
 
 	foreach ( $sides as $side ) {
 		if ( 'post' == $side->get_object_type() )
-			_p2p_append( $ptypes, $side->query_vars['post_type'] );
+			$ptypes = array_merge( $ptypes, $side->query_vars['post_type'] );
 	}
 
 	return array_unique( $ptypes );
@@ -93,33 +87,11 @@ function _p2p_meta_sql_helper( $query ) {
 }
 
 /** @internal */
-function _p2p_pluck( &$arr, $key ) {
-	$value = $arr[ $key ];
-	unset( $arr[ $key ] );
-	return $value;
-}
-
-/** @internal */
-function _p2p_append( &$arr, $values ) {
-	$arr = array_merge( $arr, $values );
-}
-
-/** @internal */
-function _p2p_first( $args ) {
-	if ( empty( $args ) )
-		return false;
-
-	return reset( $args );
-}
-
-/** @internal */
 function _p2p_get_other_id( $item ) {
 	if ( $item->ID == $item->p2p_from )
 		return $item->p2p_to;
 
 	if ( $item->ID == $item->p2p_to )
 		return $item->p2p_from;
-
-	trigger_error( "Corrupted data for item $inner_item->ID", E_USER_WARNING );
 }
 

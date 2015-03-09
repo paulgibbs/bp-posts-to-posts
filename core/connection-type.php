@@ -15,16 +15,16 @@ class P2P_Connection_Type {
 
 		$this->set_self_connections( $args );
 
-		$this->set_cardinality( _p2p_pluck( $args, 'cardinality' ) );
+		$this->set_cardinality( wp_list_pluck( $args, 'cardinality' ) );
 
 		$labels = array();
 		foreach ( array( 'from', 'to' ) as $key ) {
-			$labels[ $key ] = (array) _p2p_pluck( $args, $key . '_labels' );
+			$labels[ $key ] = (array) wp_list_pluck( $args, $key . '_labels' );
 		}
 
 		$this->labels = $labels;
 
-		$this->fields = $this->expand_fields( _p2p_pluck( $args, 'fields' ) );
+		$this->fields = $this->expand_fields( wp_list_pluck( $args, 'fields' ) );
 
 		foreach ( $args as $key => $value ) {
 			$this->$key = $value;

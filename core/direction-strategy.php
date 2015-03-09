@@ -186,7 +186,7 @@ class P2P_Directed_Connection_Type {
 
 		$already_connected = $this->get_connected( $to_check, $extra_qv, 'abstract' )->items;
 
-		_p2p_append( $to_exclude, $already_connected );
+		$to_exclude = array_merge( $to_exclude, $already_connected );
 
 		return $to_exclude;
 	}
@@ -281,7 +281,7 @@ class P2P_Directed_Connection_Type {
 	}
 
 	public function get_p2p_id( $from, $to ) {
-		return _p2p_first( $this->get_connections( array(
+		return reset( $this->get_connections( array(
 			'from' => $from,
 			'to' => $to,
 			'fields' => 'p2p_id'

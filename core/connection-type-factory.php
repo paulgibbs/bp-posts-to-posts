@@ -2,14 +2,14 @@
 
 class P2P_Connection_Type_Factory {
 	private static function create_side( &$args, $direction ) {
-		$object = _p2p_pluck( $args, $direction );
+		$object = wp_list_pluck( $args, $direction );
 
 		if ( in_array( $object, array( 'user', 'attachment' ) ) )
 			$object_type = $object;
 		else
 			$object_type = 'post';
 
-		$query_vars = _p2p_pluck( $args, $direction . '_query_vars' );
+		$query_vars = wp_list_pluck( $args, $direction . '_query_vars' );
 
 		if ( 'post' == $object_type )
 			$query_vars['post_type'] = (array) $object;
