@@ -54,15 +54,6 @@ class P2P_Connection_Type {
 		{
 			if ( !is_array( $field_args ) )
 				$field_args = array( 'title' => $field_args );
-
-			if ( !isset( $field_args['type'] ) )
-			{
-				$field_args['type'] = isset( $field_args['values'] ) ? 'select' : 'text';
-			}
-			elseif ( 'checkbox' == $field_args['type'] && !isset( $field_args['values'] ) )
-			{
-				$field_args['values'] = array( true => ' ' );
-			}
 		}
 
 		return $fields;
