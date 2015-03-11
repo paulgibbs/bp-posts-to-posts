@@ -216,25 +216,6 @@ function p2p_delete_connection( $p2p_id ) {
 }
 
 /**
- * List some items.
- *
- * @param object|array A P2P_List instance, a WP_Query instance, or a list of post objects
- * @param array $args (optional)
- */
-function p2p_list_posts( $posts, $args = array() ) {
-	if ( is_a( $posts, 'P2P_List' ) ) {
-		$list = $posts;
-	} else {
-		if ( is_a( $posts, 'WP_Query' ) )
-			$posts = $posts->posts;
-
-		$list = new P2P_List( $posts, 'P2P_Item_Post' );
-	}
-
-	return P2P_List_Renderer::render( $list, $args );
-}
-
-/**
  * Given a list of objects and another list of connected items,
  * distribute each connected item to it's respective counterpart.
  *
