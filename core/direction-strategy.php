@@ -81,9 +81,9 @@ class P2P_Directed_Connection_Type {
 
 	protected function recognize_any( $item, $which = 'current' ) {
 		if ( 'any' == $item )
-			return new P2P_Item_Any;
+			return new BP_Relations_Item_Any;
 
-		if ( is_a( $item, 'P2P_Item_Any' ) )
+		if ( is_a( $item, 'BP_Relations_Item_Any' ) )
 			return $item;
 
 		return $this->recognize( $item, $which );
@@ -265,7 +265,7 @@ class P2P_Directed_Connection_Type {
 		$args['direction'] = $this->direction;
 
 		foreach ( array( 'from', 'to' ) as $key ) {
-			if ( isset( $args[ $key ] ) && is_a( $args[ $key ], 'P2P_Item_Any' ) )
+			if ( isset( $args[ $key ] ) && is_a( $args[ $key ], 'BP_Relations_Item_Any' ) )
 				$args[ $key ] = 'any';
 		}
 

@@ -2,7 +2,7 @@
 
 class P2P_Side_User extends P2P_Side {
 
-	protected $item_type = 'P2P_Item_User';
+	protected $item_type = 'BP_Relations_Item_User';
 
 	function __construct( $query_vars ) {
 		$this->query_vars = $query_vars;
@@ -65,19 +65,6 @@ class P2P_Side_User extends P2P_Side {
 		$uq->prepare_query();
 
 		return "SELECT $uq->query_fields $uq->query_from $uq->query_where $uq->query_orderby $uq->query_limit";
-	}
-
-	function get_list( $query ) {
-		$list = new P2P_List( $query->get_results(), $this->item_type );
-
-		$qv = $query->query_vars;
-
-		if ( isset( $qv['p2p:page'] ) ) {
-			$list->current_page = $qv['p2p:page'];
-			$list->total_pages = ceil( $query->get_total() / $qv['p2p:per_page'] );
-		}
-
-		return $list;
 	}
 
 	function is_indeterminate( $side ) {
