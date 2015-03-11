@@ -48,27 +48,6 @@ function _p2p_normalize( $items ) {
 }
 
 /** @internal */
-function _p2p_wrap( $items, $class ) {
-	foreach ( $items as &$item ) {
-		$item = new $class( $item );
-	}
-
-	return $items;
-}
-
-/** @internal */
-function _p2p_extract_post_types( $sides ) {
-	$ptypes = array();
-
-	foreach ( $sides as $side ) {
-		if ( 'post' == $side->get_object_type() )
-			$ptypes = array_merge( $ptypes, $side->query_vars['post_type'] );
-	}
-
-	return array_unique( $ptypes );
-}
-
-/** @internal */
 function _p2p_meta_sql_helper( $query ) {
 	global $wpdb;
 
