@@ -139,20 +139,6 @@ class P2P_Directed_Connection_Type {
 		return $this->abstract_query( $args, 'opposite', $output );
 	}
 
-	public function get_orderby_key() {
-		if ( !$this->sortable || 'any' == $this->direction )
-			return false;
-
-		if ( 'any' == $this->sortable || $this->direction == $this->sortable )
-			return '_order_' . $this->direction;
-
-		// Back-compat
-		if ( 'from' == $this->direction )
-			return $this->sortable;
-
-		return false;
-	}
-
 	/**
 	 * Get a list of items that could be connected to a given item.
 	 *
@@ -231,14 +217,6 @@ class P2P_Directed_Connection_Type {
 			'meta' => array_merge( $meta, $this->data )
 		) );
 
-		// Store additional default values
-		foreach ( $this->fields as $key => $args ) {
-			// (array) null == array()
-			foreach ( (array) $this->get_default( $args, $p2p_id ) as $default_value ) {
-				p2p_add_meta( $p2p_id, $key, $default_value );
-			}
-		}
-
 		return $p2p_id;
 	}
 
@@ -248,16 +226,6 @@ class P2P_Directed_Connection_Type {
 		$connections = $this->get_connected( $item, $extra_qv, 'abstract' );
 
 		return !empty( $connections->items );
-	}
-
-	protected function get_default( $args, $p2p_id ) {
-		if ( isset( $args['default_cb'] ) )
-			return call_user_func( $args['default_cb'], p2p_get_connection( $p2p_id ), $this->direction );
-
-		if ( !isset( $args['default'] ) )
-			return null;
-
-		return $args['default'];
 	}
 
 	/**
