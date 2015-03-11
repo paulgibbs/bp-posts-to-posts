@@ -182,7 +182,7 @@ class P2P_Connection_Type {
 
 	public function direction_from_types( $object_type, $post_types = null ) {
 		foreach ( array( 'from', 'to' ) as $direction ) {
-			if ( !$this->_type_check( $direction, $object_type, $post_types ) )
+			if ( $object_type != $this->side[ $direction ]->get_object_type() )
 				continue;
 
 			return $this->strategy->choose_direction( $direction );
@@ -190,83 +190,4 @@ class P2P_Connection_Type {
 
 		return false;
 	}
-
-	private function _type_check( $direction, $object_type, $post_types ) {
-		if ( $object_type != $this->side[ $direction ]->get_object_type() )
-			return false;
-
-		$side = $this->side[ $direction ];
-
-		if ( !method_exists( $side, 'recognize_post_type' ) )
-			return true;
-
-		foreach ( (array) $post_types as $post_type ) {
-			if ( $side->recognize_post_type( $post_type ) ) {
-				return true;
-			}
-		}
-
-		return false;
-	}
-
-	/**
-	 * Optimized inner query, after the outer query was executed.
-	 *
-	 * Populates each of the outer querie's $post objects with a 'connected' property, containing a list of connected posts
-	 *
-	 * @param object|array $items WP_Query instance or list of post objects
-	 * @param string|array $extra_qv Additional query vars for the inner query.
-	 * @param string $prop_name The name of the property used to store the list of connected items on each post object.
-	 */
-	public function each_connected( $items, $extra_qv = array(), $prop_name = 'connected' ) {
-		if ( is_a( $items, 'WP_Query' ) )
-			$items =& $items->posts;
-
-		if ( empty( $items ) || !is_object( $items[0] ) )
-			return;
-
-		$post_types = array_unique( wp_list_pluck( $items, 'post_type' ) );
-
-		if ( count( $post_types ) > 1 ) {
-			$extra_qv['post_type'] = 'any';
-		}
-
-		$possible_directions = array();
-
-		foreach ( array( 'from', 'to' ) as $direction ) {
-			$side = $this->side[ $direction ];
-
-			if ( 'post' == $side->get_object_type() ) {
-				foreach ( $post_types as $post_type ) {
-					if ( $side->recognize_post_type( $post_type ) ) {
-						$possible_directions[] = $direction;
-					}
-				}
-			}
-		}
-
-		$direction = _p2p_compress_direction( $possible_directions );
-
-		if ( !$direction )
-			return false;
-
-		$directed = $this->set_direction( $direction );
-
-		// ignore pagination
-		foreach ( array( 'showposts', 'posts_per_page', 'posts_per_archive_page' ) as $disabled_qv ) {
-			if ( isset( $extra_qv[ $disabled_qv ] ) ) {
-				trigger_error( "Can't use '$disabled_qv' in an inner query", E_USER_WARNING );
-			}
-		}
-		$extra_qv['nopaging'] = true;
-
-		$q = $directed->get_connected( $items, $extra_qv, 'abstract' );
-
-		$raw_connected = array();
-		foreach ( $q->items as $item )
-			$raw_connected[] = $item->get_object();
-
-		p2p_distribute_connected( $items, $raw_connected, $prop_name );
-	}
 }
-
