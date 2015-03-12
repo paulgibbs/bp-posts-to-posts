@@ -1,6 +1,6 @@
 <?php
 
-class P2P_Connection_Type {
+class BP_Relations_Connection_Type {
 
 	public $side;
 
