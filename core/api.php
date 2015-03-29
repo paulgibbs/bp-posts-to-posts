@@ -2,16 +2,7 @@
 
 
 
-/**
- * Get a connection type.
- *
- * @param string $p2p_type
- *
- * @return bool|object False if connection type not found, BP_Relations_Connection_Type instance on success.
- */
-function p2p_type( $p2p_type ) {
-	return BP_Relations_Connection_Type_Factory::get_instance( $p2p_type );
-}
+
 
 /**
  * Check if a certain connection exists.
