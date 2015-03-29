@@ -1,21 +1,4 @@
 <?php
-
-interface P2P_Direction_Strategy {
-	function choose_direction( $direction );
-	function get_directed_class();
-}
-
-class P2P_Determinate_Connection_Type implements P2P_Direction_Strategy {
-
-	function choose_direction( $direction ) {
-		return $direction;
-	}
-
-	function get_directed_class() {
-		return 'P2P_Directed_Connection_Type';
-	}
-}
-
 class P2P_Directed_Connection_Type {
 
 	protected $ctype;
@@ -273,19 +256,6 @@ class P2P_Directed_Connection_Type {
 	}
 }
 
-class P2P_Indeterminate_Connection_Type implements P2P_Direction_Strategy {
-
-	function choose_direction( $direction ) {
-		return 'from';
-	}
-
-	function get_directed_class() {
-		return 'P2P_Indeterminate_Directed_Connection_Type';
-	}
-}
-
-
-
 class P2P_Indeterminate_Directed_Connection_Type extends P2P_Directed_Connection_Type {
 
 	protected function recognize( $arg, $unused = null ) {
@@ -328,11 +298,3 @@ class P2P_Indeterminate_Directed_Connection_Type extends P2P_Directed_Connection
 		return $to_exclude;
 	}
 }
-
-class P2P_Reciprocal_Connection_Type extends P2P_Indeterminate_Connection_Type {
-
-	function choose_direction( $direction ) {
-		return 'any';
-	}
-}
-
